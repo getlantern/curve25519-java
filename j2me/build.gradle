@@ -1,5 +1,5 @@
 apply plugin: 'java'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 sourceCompatibility = 1.2
@@ -29,17 +29,6 @@ signing {
     required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
     sign configurations.archives
 }
-
-task publishToMavenLocal(type: Upload) {
-    description "Installs the artifacts to the local Maven repository."
-    configuration = configurations['archives']
-    repositories {
-        mavenDeployer {
-            repository url: "file://${System.properties['user.home']}/.m2/repository"
-        }
-    }
-}
-
 
 task packageJavadoc(type: Jar, dependsOn: 'javadoc') {
     from javadoc.destinationDir

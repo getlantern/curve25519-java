@@ -13,12 +13,8 @@ buildscript {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
-
-archivesBaseName = "curve25519-android"
-version          = version_number
-group            = group_info
 
 android {
     compileSdkVersion 30
@@ -42,6 +38,7 @@ android {
 }
 
 repositories {
+    google()
     mavenCentral()
     maven { url 'https://jitpack.io' }
 }
@@ -54,18 +51,28 @@ dependencies {
 //    }
 }
 
-//signing {
-//    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
-//    sign configurations.archives
-//}
+signing {
+   required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
+   sign configurations.archives
+}
 
-task publishToMavenLocal(type: Upload) {
-    description "Installs the artifacts to the local Maven repository."
-    configuration = configurations['archives']
-    repositories {
-        mavenDeployer {
-            repository url: "file://${System.properties['user.home']}/.m2/repository"
+// the below is needed in order to get the archive to publish with maven/Jitpack
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId    = group_info
+                artifactId = "curve25519-android"
+                version    = version_number
+            }
+            debug(MavenPublication) {
+                // Applies the component for the debug build variant.
+                from components.debug
+                groupId    = group_info
+                artifactId = "curve25519-android-debug"
+                version    = version_number
+            }
         }
     }
 }
-
