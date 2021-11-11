@@ -76,3 +76,5 @@ afterEvaluate {
         }
     }
 }
+
+task install(dependsOn: publishToMavenLocal) {}
