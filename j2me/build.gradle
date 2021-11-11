@@ -1,5 +1,5 @@
 apply plugin: 'java'
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
 apply plugin: 'signing'
 
 sourceCompatibility = 1.2
@@ -24,11 +24,20 @@ dependencies {
     compile 'org.bouncycastle:bcprov-jdk12:130'
 }
 
-
-signing {
-    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
+task publishToMavenLocal(type: Upload) {
+    description "Installs the artifacts to the local Maven repository."
+    configuration = configurations['archives']
+    repositories {
+        mavenDeployer {
+            repository url: "file://${System.properties['user.home']}/.m2/repository"
+        }
+    }
 }
+
+//signing {
+//    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
+//    sign configurations.archives
+//}
 
 task packageJavadoc(type: Jar, dependsOn: 'javadoc') {
     from javadoc.destinationDir
@@ -39,6 +48,7 @@ task packageSources(type: Jar) {
     from sourceSets.main.allSource
     classifier = 'sources'
 }
+
 
 artifacts {
     archives(packageJavadoc) {

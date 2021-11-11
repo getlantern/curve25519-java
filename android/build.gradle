@@ -44,7 +44,7 @@ repositories {
 }
 
 dependencies {
-    implementation project(':java')
+    api project(':java')
 
 //    testCompile (project(":tests")) {
 //        exclude module: 'junit'
