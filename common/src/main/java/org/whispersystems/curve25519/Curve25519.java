@@ -62,6 +62,18 @@ public class Curve25519 {
     return new Curve25519KeyPair(publicKey, privateKey);
   }
 
+  public byte[] generatePublicKey(byte[] privateKey) {
+    return provider.generatePublicKey(privateKey);
+  }
+
+  public byte[] generatePrivateKey() {
+    return provider.generatePrivateKey();
+  }
+
+  public byte[] generatePrivateKey(byte[] random) {
+    return provider.generatePrivateKey(random);
+  }
+
   /**
    * Calculates an ECDH agreement.
    *
