@@ -21,15 +21,15 @@ sourceSets {
 }
 
 dependencies {
-    testCompile project(':tests')
+//    testCompile project(':tests')
 }
 
-signing {
-    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
-}
+//signing {
+//    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
+//    sign configurations.archives
+//}
 
-task installArchives(type: Upload) {
+task publishToMavenLocal(type: Upload) {
     description "Installs the artifacts to the local Maven repository."
     configuration = configurations['archives']
     repositories {

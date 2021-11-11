@@ -20,7 +20,7 @@ sourceSets {
 }
 
 dependencies {
-    testCompile project(':tests')
+//    testCompile project(':tests')
     compile 'org.bouncycastle:bcprov-jdk12:130'
 }
 
@@ -30,7 +30,7 @@ signing {
     sign configurations.archives
 }
 
-task installArchives(type: Upload) {
+task publishToMavenLocal(type: Upload) {
     description "Installs the artifacts to the local Maven repository."
     configuration = configurations['archives']
     repositories {
